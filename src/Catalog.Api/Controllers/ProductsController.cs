@@ -1,7 +1,7 @@
-﻿using Catalog.Api.ViewModels;
+﻿using Catalog.Domain.Interfaces.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Catalog.Api.Controllers
 {
@@ -9,21 +9,20 @@ namespace Catalog.Api.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly IEnumerable<ProductViewModel> products;
+        private readonly IProductRepository productRepository;
 
-        public ProductsController()
+        public ProductsController(IProductRepository productRepository)
         {
-            products = new List<ProductViewModel>
-            {
-                ProductViewModel.Create(Guid.NewGuid(), "Notebook Avell G1513 FOX-5 BS", 4799.70m),
-                ProductViewModel.Create(Guid.NewGuid(), "Smartphone ASUS ZenFone 5Z 8GB/256GB Preto",  3509.10m),
-                ProductViewModel.Create(Guid.NewGuid(), "Console Xbox One X 1TB 4K+ Controle sem Fio", 2540.19m),
-                ProductViewModel.Create(Guid.NewGuid(), "Console Playstation 4 Pro 1tb - Ps4", 2640.00m)
-            };
+            this.productRepository = productRepository;
         }
 
         // GET api/products
         [HttpGet]
-        public IActionResult Get() => Ok(products);
+        public async Task<IActionResult> Get() => Ok(await productRepository.GetAll());
+
+        // GET api/products/{id}
+        [HttpGet]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> GetById(Guid id) => Ok(await productRepository.GetById(id));
     }
 }

@@ -14,10 +14,10 @@ namespace Orders.Api.ViewModels
                 Products.Add(ProductViewModel.Create(productId));
             return this;
         }
-        public static OrderViewModel Create(IEnumerable<Guid> productIds) =>
+        public static OrderViewModel Create(Guid id, IEnumerable<Guid> productIds) =>
             new OrderViewModel
             {
-                Id = Guid.NewGuid()
+                Id = id
             }.AddProducts(productIds);
     }
 }

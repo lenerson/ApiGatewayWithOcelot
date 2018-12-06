@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Orders.Api.ViewModels;
-using System;
+using Orders.Domain.Interfaces.Repositories;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Orders.Api.Controllers
 {
@@ -9,19 +11,19 @@ namespace Orders.Api.Controllers
     [ApiController]
     public class OrdersController : ControllerBase
     {
-        private readonly IEnumerable<OrderViewModel> orders;
+        private readonly IOrderRepository orderRespository;
 
-        public OrdersController() =>
-            orders = new List<OrderViewModel>
-            {
-                OrderViewModel.Create(new Guid[] { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() }),
-                OrderViewModel.Create(new Guid[] { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() }),
-                OrderViewModel.Create(new Guid[] { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() }),
-                OrderViewModel.Create(new Guid[] { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() })
-            };
+        public OrdersController(IOrderRepository orderRespository) =>
+            this.orderRespository = orderRespository;
 
-        // GET api/values
+        // GET api/orders
         [HttpGet]
-        public IActionResult Get() => Ok(orders);
+        public async Task<IActionResult> Get()
+        {
+            var orders = new List<OrderViewModel>();
+            foreach (var order in await orderRespository.GetAll())
+                orders.Add(OrderViewModel.Create(order.Id, order.Products.Select(x => x.ProductId)));
+            return Ok(orders);
+        }
     }
 }

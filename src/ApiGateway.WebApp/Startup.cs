@@ -1,14 +1,14 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using ApiGateway.WebApp.Aggregators;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Orders.Domain.Interfaces.Repositories;
-using Orders.Repository;
-using Orders.Repository.Repositories;
+using Ocelot.Cache.CacheManager;
+using Ocelot.DependencyInjection;
+using Ocelot.Middleware;
 
-namespace Orders.Api
+namespace ApiGateway.WebApp
 {
     public class Startup
     {
@@ -24,11 +24,12 @@ namespace Orders.Api
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddDbContext<OrdersDbContext>(
-                optionsAction => optionsAction.UseSqlServer(Configuration.GetConnectionString("OrdersDb")),
-                ServiceLifetime.Scoped);
-
-            services.AddTransient(typeof(IOrderRepository), typeof(OrderRepository));
+            services.AddOcelot(Configuration)
+                .AddCacheManager(x =>
+                {
+                    x.WithDictionaryHandle();
+                })
+                .AddSingletonDefinedAggregator<OrderAggregator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,7 +40,7 @@ namespace Orders.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseMvc();
+            app.UseOcelot().Wait();
         }
     }
 }

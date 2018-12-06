@@ -1,0 +1,40 @@
+{
+  "ReRoutes": [
+    {
+      "DownstreamPathTemplate": "/api/products/{id:Guid}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 50001
+        }
+      ],
+      "UpstreamPathTemplate": "/products/{id:Guid}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "Key": "ProductById"
+    },
+    {
+      "DownstreamPathTemplate": "/api/orders",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 50002
+        }
+      ],
+      "UpstreamPathTemplate": "/orders",
+      "UpstreamHttpMethod": [ "Get" ],
+      "Key": "Orders"
+    }
+  ],
+  "Aggregates": [
+    {
+      "ReRouteKeys": [
+        "Orders",
+        "ProductById"
+      ],
+      "UpstreamPathTemplate": "/my-orders",
+      "Aggregator": "OrderAggregator"
+    }
+  ]
+}
