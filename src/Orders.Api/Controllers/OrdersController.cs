@@ -23,7 +23,7 @@ namespace Orders.Api.Controllers
         {
             var orders = new List<OrderViewModel>();
             foreach (var order in await orderRespository.GetAll())
-                orders.Add(OrderViewModel.Create(order.Id, order.Products.Select(x => x.ProductId)));
+                orders.Add(OrderViewModel.Create(order.Id, order.CustomerId, order.Products.Select(x => x.ProductId)));
             return Ok(orders);
         }
 
@@ -34,7 +34,7 @@ namespace Orders.Api.Controllers
         {
             var orders = new List<OrderViewModel>();
             foreach (var order in await orderRespository.GetByCustomerId(customerId))
-                orders.Add(OrderViewModel.Create(order.Id, order.Products.Select(x => x.ProductId)));
+                orders.Add(OrderViewModel.Create(order.Id, order.CustomerId, order.Products.Select(x => x.ProductId)));
             return Ok(orders);
         }
     }

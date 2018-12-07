@@ -14,6 +14,19 @@
       "Key": "CustomerById"
     },
     {
+      "DownstreamPathTemplate": "/api/products",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 50001
+        }
+      ],
+      "UpstreamPathTemplate": "/products",
+      "UpstreamHttpMethod": [ "Get" ],
+      "Key": "AllProducts"
+    },
+    {
       "DownstreamPathTemplate": "/api/products/{id:Guid}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -37,17 +50,20 @@
       ],
       "UpstreamPathTemplate": "/orders/{customerId:Guid}",
       "UpstreamHttpMethod": [ "Get" ],
-      "Key": "Orders"
+      "Key": "OrdersByCustomerId"
     }
   ],
   "Aggregates": [
     {
       "ReRouteKeys": [
         "CustomerById",
-        "Orders"
+        "OrdersByCustomerId"
       ],
       "UpstreamPathTemplate": "/my-orders/{customerId:Guid}",
       "Aggregator": "OrderAggregator"
     }
-  ]
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:50000"
+  }
 }

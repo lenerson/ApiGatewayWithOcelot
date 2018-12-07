@@ -13,19 +13,19 @@ namespace ApiGateway.WebApp.Extensions
         public static async Task<T> Deserialize<T>(this DownstreamResponse response) =>
             await response.Content.ReadAsAsync<T>();
 
-        public static DownstreamResponse EmptyResponse(this List<DownstreamResponse> responses) =>
+        public static DownstreamResponse Empty(this List<DownstreamResponse> responses) =>
             new DownstreamResponse(
                 new StringContent(string.Empty),
                 HttpStatusCode.OK,
                 responses.SelectMany(x => x.Headers).ToList(),
-                string.Empty);
+                "Empty response from response list.");
 
         public static DownstreamResponse Ok(this List<DownstreamResponse> responses, object result) =>
             new DownstreamResponse(
                 new StringContent(SerializeObject(result)),
                 HttpStatusCode.OK,
                 responses.SelectMany(x => x.Headers).ToList(),
-                string.Empty
+                "Ok response from response list."
             );
     }
 }
