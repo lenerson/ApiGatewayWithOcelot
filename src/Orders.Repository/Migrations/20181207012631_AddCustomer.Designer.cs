@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Orders.Repository;
 
 namespace Orders.Repository.Migrations
 {
     [DbContext(typeof(OrdersDbContext))]
-    partial class OrdersDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181207012631_AddCustomer")]
+    partial class AddCustomer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,7 +26,7 @@ namespace Orders.Repository.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid>("CustomerId");
+                    b.Property<Guid>("ClientId");
 
                     b.HasKey("Id");
 
@@ -33,8 +35,8 @@ namespace Orders.Repository.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("80cdd625-47e1-46aa-bf35-ec3547737b8c"),
-                            CustomerId = new Guid("354d06be-9c1d-4b8b-a7d7-79f10c5beebb")
+                            Id = new Guid("377c779f-c96c-4cb2-b0d8-e9e233215e3b"),
+                            ClientId = new Guid("354d06be-9c1d-4b8b-a7d7-79f10c5beebb")
                         });
                 });
 
@@ -51,17 +53,17 @@ namespace Orders.Repository.Migrations
                     b.HasData(
                         new
                         {
-                            OrderId = new Guid("80cdd625-47e1-46aa-bf35-ec3547737b8c"),
+                            OrderId = new Guid("377c779f-c96c-4cb2-b0d8-e9e233215e3b"),
                             ProductId = new Guid("7e9729b8-9704-4a0b-ae39-036cacae09f6")
                         },
                         new
                         {
-                            OrderId = new Guid("80cdd625-47e1-46aa-bf35-ec3547737b8c"),
+                            OrderId = new Guid("377c779f-c96c-4cb2-b0d8-e9e233215e3b"),
                             ProductId = new Guid("3e5ff496-e40d-4a59-baf9-30081918f445")
                         },
                         new
                         {
-                            OrderId = new Guid("80cdd625-47e1-46aa-bf35-ec3547737b8c"),
+                            OrderId = new Guid("377c779f-c96c-4cb2-b0d8-e9e233215e3b"),
                             ProductId = new Guid("11253e54-ed71-466c-9e7a-430fc14a17b9")
                         });
                 });

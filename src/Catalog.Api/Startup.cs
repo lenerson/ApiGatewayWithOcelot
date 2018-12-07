@@ -28,6 +28,7 @@ namespace Catalog.Api
                 optionsAction => optionsAction.UseSqlServer(Configuration.GetConnectionString("CatalogDb")),
                 ServiceLifetime.Scoped);
 
+            services.AddTransient(typeof(ICustomerRepository), typeof(CustomerRepository));
             services.AddTransient(typeof(IProductRepository), typeof(ProductRepository));
         }
 

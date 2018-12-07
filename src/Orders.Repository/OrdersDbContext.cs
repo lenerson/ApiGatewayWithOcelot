@@ -21,7 +21,7 @@ namespace Orders.Repository
             modelBuilder.ApplyConfiguration(new OrderMap());
             modelBuilder.ApplyConfiguration(new OrderProductMap());
 
-            var order = Order.CreateNew(new List<Guid>());
+            var order = Order.CreateNew(new Guid("354d06be-9c1d-4b8b-a7d7-79f10c5beebb"), new List<Guid>());
 
             modelBuilder.Entity<Order>().HasData(order);
 

@@ -16,7 +16,12 @@ namespace Catalog.Repository
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new CustomerMap());
             modelBuilder.ApplyConfiguration(new ProductMap());
+
+            modelBuilder.Entity<Customer>().HasData(
+                Customer.CreateNew("João da Silva")
+            );
 
             modelBuilder.Entity<Product>().HasData(
                 Product.CreateNew("Notebook Avell G1513 FOX-5 BS", "Notebook Avell G1513 FOX-5 BS", 4799.70m),

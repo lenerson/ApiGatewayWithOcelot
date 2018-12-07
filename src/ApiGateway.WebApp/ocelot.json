@@ -1,6 +1,19 @@
 {
   "ReRoutes": [
     {
+      "DownstreamPathTemplate": "/api/customers/{customerId:Guid}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 50001
+        }
+      ],
+      "UpstreamPathTemplate": "/customers/{customerId:Guid}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "Key": "CustomerById"
+    },
+    {
       "DownstreamPathTemplate": "/api/products/{id:Guid}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -14,7 +27,7 @@
       "Key": "ProductById"
     },
     {
-      "DownstreamPathTemplate": "/api/orders",
+      "DownstreamPathTemplate": "/api/orders/{customerId:Guid}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -22,7 +35,7 @@
           "Port": 50002
         }
       ],
-      "UpstreamPathTemplate": "/orders",
+      "UpstreamPathTemplate": "/orders/{customerId:Guid}",
       "UpstreamHttpMethod": [ "Get" ],
       "Key": "Orders"
     }
@@ -30,10 +43,10 @@
   "Aggregates": [
     {
       "ReRouteKeys": [
-        "Orders",
-        "ProductById"
+        "CustomerById",
+        "Orders"
       ],
-      "UpstreamPathTemplate": "/my-orders",
+      "UpstreamPathTemplate": "/my-orders/{customerId:Guid}",
       "Aggregator": "OrderAggregator"
     }
   ]

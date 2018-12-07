@@ -15,6 +15,10 @@ namespace Orders.Repository.Mappings
                 .ValueGeneratedOnAdd();
 
             builder
+                .Property(x => x.CustomerId)
+                .IsRequired();
+
+            builder
                 .HasMany(x => x.Products)
                 .WithOne(x => x.Order)
                 .HasForeignKey(x => x.OrderId);

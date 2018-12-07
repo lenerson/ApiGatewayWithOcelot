@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Orders.Api.ViewModels;
 using Orders.Domain.Interfaces.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,6 +23,17 @@ namespace Orders.Api.Controllers
         {
             var orders = new List<OrderViewModel>();
             foreach (var order in await orderRespository.GetAll())
+                orders.Add(OrderViewModel.Create(order.Id, order.Products.Select(x => x.ProductId)));
+            return Ok(orders);
+        }
+
+        // GET api/orders/{customerId}
+        [HttpGet]
+        [Route("{customerId:Guid}")]
+        public async Task<IActionResult> GetByCustomerId(Guid customerId)
+        {
+            var orders = new List<OrderViewModel>();
+            foreach (var order in await orderRespository.GetByCustomerId(customerId))
                 orders.Add(OrderViewModel.Create(order.Id, order.Products.Select(x => x.ProductId)));
             return Ok(orders);
         }
